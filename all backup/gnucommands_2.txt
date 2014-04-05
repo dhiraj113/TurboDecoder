@@ -1,0 +1,16 @@
+set term postscript eps enhanced color
+set output "snrvsber_plot_guard.ps"
+set xlabel "SNR(in dB)"
+set ylabel "BER(logscale)"
+set title "BER vs SNR plot for different types of guarding, No. of iterations = 5"
+set logscale y
+plot"ber_vs_snr_guard_gnu.dat" index 0:0 using 1:3 title "Prev val init" with lines,\
+"ber_vs_snr_guard_gnu.dat" index 1:1 using 1:3 title "Only guard, size=3" with lines,\
+"ber_vs_snr_guard_gnu.dat" index 2:2 using 1:3 title "Only guard, size=5" with lines,\
+"ber_vs_snr_guard_gnu.dat" index 3:3 using 1:3 title "Only guard, size=8" with lines,\
+"ber_vs_snr_guard_gnu.dat" index 4:4 using 1:3 title "Only guard, size=10" with lines,\
+"ber_vs_snr_guard_gnu.dat" index 5:5 using 1:3 title "Prev val init and guard, size=3" with lines,\
+"ber_vs_snr_guard_gnu.dat" index 6:6 using 1:3 title "Prev val init and guard, size=5" with lines,\
+"ber_vs_snr_guard_gnu.dat" index 7:7 using 1:3 title "Prev val init and guard, size=8" with lines,\
+"ber_vs_snr_guard_gnu.dat" index 8:8 using 1:3 title "Without guarding at all" with lines, \
+"ber_vs_snr_guard_gnu.dat" index 9:9 using 1:3 title "Max-log map with no parallelisation" with lines

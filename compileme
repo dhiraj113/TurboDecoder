@@ -1,0 +1,3 @@
+nvcc main.cu encoder.cu noise.cu trellis.cu  decoderlog_basic.cu decoderlog_parallel.cu decoderlog_parallel_close.cu simulations.cu plotting.cu
+
+

@@ -1,0 +1,172 @@
+* Please make sure your PATH includes /usr/local/cuda/bin
+* Please make sure your LD_LIBRARY_PATH includes /usr/local/cuda/lib
+* To uninstall the NVIDIA GPU Computing SDK, please delete /home/dhiraj/NVIDIA_GPU_Computing_SDK
+
+
+CUDA path is to be set to the below:(Without this the nvcc command will not work)
+
+export PATH=/usr/local/cuda/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/computeprof/bin
+
+
+export PATH=/usr/local/cuda/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+
+
+opening visual profiler : /usr/local/cuda/computeprof/bin/computeprof &
+
+
+export LD_LIBRARY_PATH=/usr/local/cuda/lib:$LD_LIBRARY_PATH
+
+compile to find out registers used and shared memory
+(add this extra option)
+--ptxas-options=-v
+
+nvcc -Xptxas -v  main.cu encoder.cu noise.cu trellis.cu  decoderlog_basic.cu decoderlog_parallel.cu decoderlog_parallel_close.cu simulations.cu
+
+nvcc -arch=sm_13 -Xptxas -v  main.cu encoder.cu noise.cu trellis.cu  decoderlog_basic.cu decoderlog_parallel.cu decoderlog_parallel_close.cu simulations.cu
+
+vncserver -cc 3 -depth 24 -geometry 1280x1000
+
+***Now about the Graphic processor which I am using in my laptop as a GPU***
+
+
+--- General Information for device 0 ---
+Name:  GeForce 8600M GT
+Compute capability:  1.1
+Clock rate:  950000
+Device copy overlap:  Enabled
+Kernel execution timeout :  Enabled
+   --- Memory Information for device 0 ---
+Total global mem:  267714560
+Total constant Mem:  65536
+Max mem pitch:  2147483647
+Texture Alignment:  256
+   --- MP Information for device 0 ---
+Multiprocessor count:  4
+Shared mem per mp:  16384
+Registers per mp:  8192
+Threads in warp:  32
+Max threads per block:  512
+Max thread dimensions:  (512, 512, 64)
+Max grid dimensions:  (65535, 65535, 1)
+
+
+  --- General Information for device 0 ---
+Name:  GeForce 9800 GX2
+Compute capability:  1.1
+Clock rate:  1500000
+Device copy overlap:  Enabled
+Kernel execution timeout :  Disabled
+   --- Memory Information for device 0 ---
+Total global mem:  536674304
+Total constant Mem:  65536
+Max mem pitch:  2147483647
+Texture Alignment:  256
+   --- MP Information for device 0 ---
+Multiprocessor count:  16
+Shared mem per mp:  16384
+Registers per mp:  8192
+Threads in warp:  32
+Max threads per block:  512
+Max thread dimensions:  (512, 512, 64)
+Max grid dimensions:  (65535, 65535, 1)
+
+   --- General Information for device 1 ---
+Name:  GeForce 9800 GX2
+Compute capability:  1.1
+Clock rate:  1500000
+Device copy overlap:  Enabled
+Kernel execution timeout :  Enabled
+   --- Memory Information for device 1 ---
+Total global mem:  536150016
+Total constant Mem:  65536
+Max mem pitch:  2147483647
+Texture Alignment:  256
+   --- MP Information for device 1 ---
+Multiprocessor count:  16
+Shared mem per mp:  16384
+Registers per mp:  8192
+Threads in warp:  32
+Max threads per block:  512
+Max thread dimensions:  (512, 512, 64)
+Max grid dimensions:  (65535, 65535, 1)
+
+The gpu in my lab: :) faster :)
+   --- General Information for device 0 ---
+Name:  GeForce 9800 GX2
+Compute capability:  1.1
+Clock rate:  1500000
+Device copy overlap:  Enabled
+Kernel execution timeout :  Disabled
+   --- Memory Information for device 0 ---
+Total global mem:  536674304
+Total constant Mem:  65536
+Max mem pitch:  2147483647
+Texture Alignment:  256
+   --- MP Information for device 0 ---
+Multiprocessor count:  16
+Shared mem per mp:  16384
+Registers per mp:  8192
+Threads in warp:  32
+Max threads per block:  512
+Max thread dimensions:  (512, 512, 64)
+Max grid dimensions:  (65535, 65535, 1)
+
+   --- General Information for device 1 ---
+Name:  GeForce 9800 GX2
+Compute capability:  1.1
+Clock rate:  1500000
+Device copy overlap:  Enabled
+Kernel execution timeout :  Enabled
+   --- Memory Information for device 1 ---
+Total global mem:  536150016
+Total constant Mem:  65536
+Max mem pitch:  2147483647
+Texture Alignment:  256
+   --- MP Information for device 1 ---
+Multiprocessor count:  16
+Shared mem per mp:  16384
+Registers per mp:  8192
+Threads in warp:  32
+Max threads per block:  512
+Max thread dimensions:  (512, 512, 64)
+Max grid dimensions:  (65535, 65535, 1)
+
+
+
+********The gpu used in the paper**********
+Device 1: "Tesla C1060"
+  CUDA Capability Major revision number:         1
+  CUDA Capability Minor revision number:         3
+  Total amount of global memory:                 4294967295 bytes
+  Number of multiprocessors:                     30
+  Number of cores:                               240
+  Total amount of constant memory:               65536 bytes
+  Total amount of shared memory per block:       16384 bytes
+  Total number of registers available per block: 16384
+  Warp size:                                     32
+  Maximum number of threads per block:           512
+  Maximum sizes of each dimension of a block:    512 x 512 x 64
+  Maximum sizes of each dimension of a grid:     65535 x 65535 x 1
+  Maximum memory pitch:                          262144 bytes
+  Texture alignment:                             256 bytes
+  Clock rate:                                    1.30 GHz
+  Concurrent copy and execution:                 Yes
+  Run time limit on kernels:                     No
+  Integrated:                                    No
+  Support host page-locked memory mapping:       Yes
+  Compute mode:                                  Default (multiple host threads can use this device simultaneously)
+
+
+
+
+How to scp:
+scp ee06b066_booth.bit 10.7.8.42:/tmp
+
+rm decoder_output.dat encoded_bits.dat channel_out.dat input_bits.dat 
+
+sudo rm -rf ~/.local/share/Trash/files/*
+
+

@@ -1,0 +1,13 @@
+set term postscript eps enhanced color
+set output "snrvsber_plot_block.ps"
+set xlabel "SNR(in dB)"
+set ylabel "BER(logscale)"
+set title "BER vs SNR plot for different no. of blocks"
+set title "Guarding type - Previous value initialisation + training window, Guard size = 5"
+set logscale y
+plot"ber_vs_snr_blocks_gnu.dat" index 0:0 using 1:3 title "# of blocks 48" with lines,\
+"ber_vs_snr_blocks_gnu.dat" index 1:1 using 1:3 title "# of blocks 64" with lines,\
+"ber_vs_snr_blocks_gnu.dat" index 2:2 using 1:3 title "# of blocks 96" with lines,\
+"ber_vs_snr_blocks_gnu.dat" index 3:3 using 1:3 title "# of blocks 128" with lines,\
+"ber_vs_snr_blocks_gnu.dat" index 4:4 using 1:3 title "# of blocks 192" with lines,\
+"ber_vs_snr_blocks_gnu.dat" index 5:5 using 1:3 title "# of blocks 1" with lines

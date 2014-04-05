@@ -1,0 +1,96 @@
+***************************************************Compiling the code*****************************
+
+*********************************Adding the path***********************
+export PATH=/usr/local/cuda/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+
+or simply
+
+source sourceme
+***********************************************************************
+
+*************Compilation*******************
+nvcc main.cu encoder.cu noise.cu trellis.cu  decoderlog_basic.cu decoderlog_parallel.cu decoderlog_parallel_close.cu simulations.cu plotting.cu
+
+or simply
+
+source compileme
+********************************************************************************************************
+
+********************************************************Input and Output*************************************
+Input to the decoder :
+Noise corrupted channel values or rate 1/3 decoder : "channel_out.dat"
+x	y1	y2
+...
+...
+(DATASIZE*N rows, tab separated channel values)
+
+The encoder_and_noise() function, generates the inpput bits, encodes them, adds noise and returns the channel values.
+Generates : "input_bits.dat"
+Encodes and generates : "encoded_bits.dat"
+Adds noise and generates : "channel_out.dat"
+
+Output from the decoder :
+The decoder bits '0' or '1' : "decoder_output.dat"
+(DATASIZE*N rows)
+
+decode_and_analyse(), assumes the presence of "inputbits.dat". So used purely as a decoder without any estimation of BER and FER, this function should be commented out.
+************************************************************************************************************************
+
+
+*********************************************Selecting the type of decoder*********************************************
+There are 4 implemenatations of the turbo decoder 
+
+The decoders can be selected using the "decoder_kind" :
+
+decoder_kind = 1 ----> Non-parallel implementation purely in C --- "decoderlog_basic.cu".
+decoder_kind = 2 ----> Parallel implementation in C --- "decoderlog_parallel.cu".
+decoder_kind = 3 ----> Parallel implementation in C mimicking the implementation in CUDA C --- "decoderlog_parallel_close.cu".
+(Incomplete...was primarily done for debugging purposes)
+decoder_kind = 4 ----> Implementation in CUDA C for running on the GPU --- "decoderlog.cu".
+************************************************************************************************************************
+
+
+************************************Selecting Full Log-MAP and Max Log-MAP**********************************************
+For the decoder on the GPU, 
+In the function, appropriately chosen max(a,b) or x(a,b) + __logf(1+__expf((-1)*abs(a-b))) depending on it being Max Log-MAP or Full Log-MAP respectively.
+**************************Max Log-MAP**********************
+__device__ float maxstar(float a,float b)
+{
+	return max(a,b);
+	//return max(a,b) + __logf(1+__expf((-1)*abs(a-b)));
+}
+************************************************************
+
+**************************Full Log-MAP**********************
+__device__ float maxstar(float a,float b)
+{
+	//return max(a,b);
+	return max(a,b) + __logf(1+__expf((-1)*abs(a-b)));
+}
+**************************************************************
+Similarly, do for the function maxf(float a, float b) for the decoder implementations in C on the CPU.
+************************************************************************************************************************
+
+
+*********************************************Selecting the type of guarding mechanism***********************************
+In addition, three types of guarding mechanisms have been implemented for each parallel decoder (decoder_kind = 2, 4) :
+
+The guarding mechanims can be selected using the "guarding_type" :
+
+guarding_type = 1 ----> Previous Iteration value initialisation (PIVI)
+guarding_type = 2 ----> Only double sided training window (DSTW)
+guarding_type = 3 ----> Previous Iteration value initialisation with double sided training window (PIVIDSTW)
+
+guarding_type = 2,3; requires specifying the size of the guard window thorugh "guard_size".
+(The MAX_GUARD_SIZE, defines in "hashdefined.h" should be greater than "guard_size", in addition MAX_GUARD_SIZE should be a multiple of 8 i.e. 0, 8, 16...)
+************************************************************************************************************************
+
+***************************************Changing the properties of the parallel decoder*********************************
+MAX_SUB_BLOCK_SIZE should be defined at compile time.
+For a given MAX_SUB_BLOCK_SIZE, the number of parallel sub-blocks P should be: P >= DATASIZE/MAX_SUB_BLOCK_SIZE;
+An unnecessarily large MAX_SUB_BLOCK_SIZE decreases performance.
+************************************************************************************************************************
+
+
+
